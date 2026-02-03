@@ -191,10 +191,17 @@
             0%, 100% { opacity: 0; transform: scale(0); }
             50% { opacity: 1; transform: scale(1); }
         }
+        .scrollable-container {
+  height: 200px;
+  overflow-y: auto; /* Vertical scroll if needed */
+  overflow-x: hidden; /* Hide horizontal overflow */
+}
+
     </style>
 </head>
-<body id="noBtnn" class="min-h-screen text-white overflow-hidden">
+<body class="min-h-screen text-white overflow-hidden scrollable-container">
 
+    
     <!-- Background Music -->
     <!-- Background Music (Muted initially – required by browser) -->
     <audio id="bgMusicc" preload="auto" loop>
@@ -639,10 +646,6 @@
     // ⬇️ Smooth scroll to download section
     setTimeout(() => {
         document.getElementById('downloadSection')
-            .scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 2500); // wait for animation to finish
-    setTimeout(() => {
-        document.getElementById('noBtnn')
             .scrollIntoView({ behavior: 'smooth', block: 'center' });
     }, 2500); // wait for animation to finish
     }
