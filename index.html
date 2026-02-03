@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine? 💝</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff6b9d;
+            --secondary: #ffc2d1;
+            --accent: #ff006e;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .dancing-font {
+            font-family: 'Dancing Script', cursive;
+        }
+        
+        /* Floating hearts background */
+        .heart {
+            position: fixed;
+            top: -10%;
+            font-size: 20px;
+            animation: float 10s ease-in-out infinite;
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.4; }
+            90% { opacity: 0.4; }
+            100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+        }
+        
+        /* Button animations */
+        .yes-btn {
+            background: linear-gradient(45deg, #ff006e, #ff6b9d);
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 10px 30px rgba(255, 0, 110, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .yes-btn:hover {
+            transform: scale(1.1) rotate(-2deg);
+            box-shadow: 0 20px 40px rgba(255, 0, 110, 0.6), 0 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+        
+        .yes-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+            animation: pulse-ring 2s ease-out infinite;
+        }
+        
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 1; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+        
+        .no-btn {
+            background: #4a4a4a;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        
+        .no-btn.running {
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        /* Card flip animation */
+        .valentine-card {
+            transform-style: preserve-3d;
+            animation: cardFloat 3s ease-in-out infinite;
+        }
+        
+        @keyframes cardFloat {
+            0%, 100% { transform: translateY(0px) rotateY(0deg); }
+            50% { transform: translateY(-10px) rotateY(2deg); }
+        }
+        
+        /* GIF container */
+        .gif-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            transform: scale(0);
+            animation: gifPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        
+        @keyframes gifPop {
+            to { transform: scale(1); }
+        }
+        
+        /* Sparkle effects */
+        .sparkle {
+            position: absolute;
+            pointer-events: none;
+            animation: sparkle 1s ease-out forwards;
+        }
+        
+        @keyframes sparkle {
+            0% { transform: scale(0) rotate(0deg); opacity: 1; }
+            100% { transform: scale(2) rotate(180deg); opacity: 0; }
+        }
+        
+        /* Music visualizer */
+        .music-bar {
+            display: inline-block;
+            width: 4px;
+            background: #ff6b9d;
+            margin: 0 2px;
+            animation: musicWave 1s ease-in-out infinite;
+        }
+        
+        @keyframes musicWave {
+            0%, 100% { height: 10px; }
+            50% { height: 30px; }
+        }
+        
+        .hidden-section {
+            display: none;
+        }
+        
+        .visible-section {
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Jumping text */
+        .jump-text span {
+            display: inline-block;
+            animation: jump 0.5s ease infinite;
+            animation-delay: calc(var(--i) * 0.1s);
+        }
+        
+        @keyframes jump {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            top: -10px;
+            animation: confetti-fall 3s linear forwards;
+            z-index: 9999;
+        }
+        
+        @keyframes confetti-fall {
+            to { transform: translateY(100vh) rotate(720deg); }
+        }
+        
+        .glitter {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: gold;
+            border-radius: 50%;
+            animation: glitter 2s ease-in-out infinite;
+        }
+        
+        @keyframes glitter {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="min-h-screen text-white overflow-hidden">
+
+    <!-- Background Music -->
+    <!-- Background Music (Muted initially – required by browser) -->
+    <audio id="bgMusicc" preload="auto" loop>
+    <source src="urike-urike.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Music Controls -->
+    <button onclick="toggleMusic()" class="fixed top-4 right-4 z-50 bg-white/20 backdrop-blur-sm p-3 rounded-full hover:bg-white/30 transition-all group">
+        <span id="musicIcon">🎵</span>
+        <div class="absolute -bottom-8 right-0 bg-black/80 text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+            Toggle Music
+        </div>
+    </button>
+
+    <!-- Floating Hearts Background -->
+    <div id="floatingHearts"></div>
+
+    <!-- Main Container -->
+    <div class="relative z-10 min-h-screen flex flex-col items-center justify-center p-4">
+        
+        <!-- Landing / Question Section -->
+        <div id="questionSection" class="visible-section text-center max-w-2xl w-full">
+            
+            <!-- Animated Header -->
+            <div class="mb-8">
+                <h1 class="dancing-font text-5xl md:text-7xl mb-4 drop-shadow-2xl jump-text">
+                    <span style="--i:0">H</span><span style="--i:1">e</span><span style="--i:2">y</span>
+                    <span style="--i:3">&nbsp;</span>
+                    <span style="--i:4" id="recipientName" class="text-yellow-300">Anubangaram</span>
+                    <span style="--i:5">!</span>
+                </h1>
+                <div class="text-lg md:text-xl opacity-90 mb-2">I've got a question for you...</div>
+                <div class="w-32 h-1 bg-white/50 mx-auto rounded-full"></div>
+            </div>
+
+            <!-- Question Card -->
+            <div class="valentine-card bg-white/10 backdrop-blur-lg rounded-3xl p-8 md:p-12 border border-white/30 shadow-2xl mb-8">
+                <div class="text-4xl md:text-6xl mb-6 animate-pulse">💝</div>
+                <h2 class="text-3xl md:text-5xl font-bold mb-8 dancing-font drop-shadow-lg">
+                    Will You Be My Valentine?
+                </h2>
+                
+                <p class="text-lg opacity-90 mb-8 italic">
+                    "Every love story is beautiful, but ours is my favorite...as I keep on falling in Love with your every single day 💕!"
+                </p>
+            </div>
+
+            <!-- Buttons Container -->
+            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center min-h-[120px] relative">
+                
+                <!-- YES Button -->
+                <button id="yesBtn" onclick="handleYes()" 
+                    class="yes-btn px-12 py-6 rounded-full text-2xl font-bold text-white transform hover:scale-110 active:scale-95 transition-all duration-300 border-4 border-white/30 group relative">
+                    <span class="relative z-10 flex items-center gap-2">
+                        YES! 💖
+                        <span class="group-hover:animate-bounce">✨</span>
+                    </span>
+                    <!-- Heart burst on hover -->
+                    <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div class="absolute -top-2 -left-2">💕</div>
+                        <div class="absolute -bottom-2 -right-2">💕</div>
+                        <div class="absolute -top-2 -right-2">💕</div>
+                        <div class="absolute -bottom-2 -left-2">💕</div>
+                    </div>
+                </button>
+
+                <!-- NO Button -->
+                <button id="noBtn" onmouseover="runAway(this)" onclick="turnToYes(this)"
+                    class="no-btn px-8 py-4 rounded-full text-lg font-medium text-gray-200 hover:bg-gray-600 transition-all border-2 border-white/20 relative overflow-hidden">
+                    <span id="noText">No thanks 😈</span>
+                </button>
+            </div>
+
+            <p class="mt-8 text-sm opacity-70 italic">P.S. The button might have a mind of its own... 😉</p>
+        </div>
+
+        <!-- Success Section (Hidden initially) -->
+        <div id="successSection" class="hidden-section text-center w-full max-w-4xl">
+            
+            <div class="mb-6">
+                <h2 class="dancing-font text-5xl md:text-7xl mb-4 drop-shadow-2xl">
+                    YAY! 💕
+                </h2>
+                <p class="text-2xl mb-6">Bujji baby said YES! This is the best day ever!</p>
+            </div>
+
+            <!-- GIF Container -->
+            <div class="gif-container p-4 md:p-8 mb-8 inline-block max-w-lg w-full">
+                <div class="bg-gray-100 rounded-xl overflow-hidden relative aspect-square flex items-center justify-center">
+                    <!-- Placeholder for custom GIF - replace src with your GIF -->
+                    <img id="valentineGif" 
+                         src="custom.gif" 
+                         alt="Celebration GIF" 
+                         class="w-full h-full object-cover rounded-lg">
+                    
+                    <!-- Overlay Glitter Effects -->
+                    <div class="absolute inset-0 pointer-events-none" id="glitterContainer"></div>
+                </div>
+                
+                <div class="mt-4 text-gray-800">
+                    <p class="font-bold text-xl">Our Love Story Begins! 💑</p>
+                    <p class="text-sm text-gray-600 mt-2">A mind screenshot has been saved of this moment! 📸</p>
+                </div>
+            </div>
+
+            <!-- Download Section -->
+            <div id="downloadSection" class="flex flex-col sm:flex-row gap-4 justify-center items-center mt-6">
+                <button onclick="generateCard()" class="bg-gradient-to-r from-pink-500 to-rose-500 px-8 py-4 rounded-full text-white font-bold text-lg shadow-xl hover:scale-105 transition-transform flex items-center gap-2">
+                    <span>💌</span> Download Valentine Card (PDF)
+                </button>
+                
+                <button onclick="resetDemo()" class="bg-white/20 px-6 py-4 rounded-full text-white font-medium hover:bg-white/30 transition-all">
+                    Start Over ↺
+                </button>
+            </div>
+
+            <!-- Confetti Canvas -->
+            <canvas id="confettiCanvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+        </div>
+
+    </div>
+
+    <!-- PDF Template (Hidden) -->
+    <div id="pdfTemplate" class="fixed -left-[9999px] top-0 bg-white p-12" style="width: 595px; height: 842px;">
+        <div class="text-center h-full flex flex-col justify-center items-center" style="background: linear-gradient(to bottom, #ffeef2, #ffe0e6); border: 4px solid #ff6b9d; border-radius: 20px; padding: 40px;">
+            <div style="font-size: 80px; margin-bottom: 20px;">💝</div>
+            <h1 style="font-family: 'Dancing Script', cursive; font-size: 48px; color: #ff006e; margin-bottom: 20px;">
+                Happy Valentine's Day!
+            </h1>
+            <p style="font-size: 24px; color: #666; margin-bottom: 30px;">
+                To: <span id="pdfRecipient">My Love - Anu Bujji Bangaram</span>
+            </p>
+            <div style="width: 100px; height: 2px; background: #ff6b9d; margin: 20px auto;"></div>
+            <p style="font-size: 20px; color: #555; font-style: italic; line-height: 1.6; margin: 20px 0;">
+                "You are the missing piece to my heart's puzzle.<br>
+                Every moment with you is a treasure.<br>
+                Thank you for being my Valentine!"
+            </p>
+            <div style="margin-top: 40px; font-size: 18px; color: #ff6b9d;">
+                With Love,<br>
+                <span id="pdfSender">Your Secret Admirer</span>
+            </div>
+            <div style="margin-top: 30px; font-size: 60px;">💕💖💕</div>
+        </div>
+    </div>
+
+    <script>
+        // URL Parameter Handler - Set recipient name from URL
+        
+
+        // Generate floating hearts
+        function createFloatingHearts() {
+            const container = document.getElementById('floatingHearts');
+            const colors = ['#ff6b9d', '#ffc2d1', '#ff006e', '#ffb6c1', '#ff69b4'];
+            
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = ['💕', '💖', '💗', '💓', '💝'][Math.floor(Math.random() * 5)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 10 + 's';
+                heart.style.animationDuration = (8 + Math.random() * 6) + 's';
+                heart.style.fontSize = (15 + Math.random() * 25) + 'px';
+                container.appendChild(heart);
+            }
+        }
+        createFloatingHearts();
+
+        // Music Toggle
+        
+        // No Button Runaway Logic
+        let runAttempts = 0;
+        const noTexts = [
+            "No thanks 😈",
+            "Nice try! 🏃",
+            "Too slow! 🐌",
+            "Can't catch me! 😜",
+            "Nope! ✋",
+            "Keep trying! 💨",
+            "Almost had it! 👻",
+            "Not today! 🙈"
+        ];
+
+        function runAway(btn) {
+            runAttempts++;
+            const rect = btn.getBoundingClientRect();
+            const maxX = window.innerWidth - rect.width - 20;
+            const maxY = window.innerHeight - rect.height - 20;
+            
+            // Random position but keeping somewhat close to center to prevent losing it
+            const currentX = rect.left;
+            const currentY = rect.top;
+            
+            let newX = currentX + (Math.random() - 0.5) * 300;
+            let newY = currentY + (Math.random() - 0.5) * 200;
+            
+            // Boundaries
+            newX = Math.max(20, Math.min(newX, maxX));
+            newY = Math.max(20, Math.min(newY, maxY));
+            
+            btn.classList.add('running');
+            btn.style.position = 'fixed';
+            btn.style.left = newX + 'px';
+            btn.style.top = newY + 'px';
+            btn.style.transform = `rotate(${Math.random() * 20 - 10}deg) scale(${Math.max(0.7, 1 - runAttempts * 0.05)})`;
+            
+            // Change text
+            document.getElementById('noText').textContent = noTexts[Math.min(runAttempts, noTexts.length - 1)];
+            
+            // Add trail effect
+            createTrail(rect.left + rect.width/2, rect.top + rect.height/2);
+            
+            // After 5 runs, make it easier to click (turn to yes)
+            if (runAttempts >= 5) {
+                btn.style.transform = 'scale(1.2)';
+                document.getElementById('noText').textContent = "Okay fine... 😅";
+            }
+        }
+
+        function createTrail(x, y) {
+            const trail = document.createElement('div');
+            trail.textContent = '💨';
+            trail.style.position = 'fixed';
+            trail.style.left = x + 'px';
+            trail.style.top = y + 'px';
+            trail.style.pointerEvents = 'none';
+            trail.style.fontSize = '20px';
+            trail.style.zIndex = '9999';
+            trail.style.animation = 'fadeOut 0.5s forwards';
+            document.body.appendChild(trail);
+            setTimeout(() => trail.remove(), 500);
+        }
+
+        // Turn No into Yes
+        function turnToYes(btn) {
+            if (runAttempts < 5) {
+                runAway(btn);
+                return;
+            }
+            
+            // Transform to Yes
+            btn.className = 'yes-btn px-12 py-6 rounded-full text-2xl font-bold text-white transform scale-110 border-4 border-white/30';
+            btn.innerHTML = '<span>YES! 💖</span>';
+            btn.onclick = handleYes;
+            btn.onmouseover = null;
+            
+            // Celebration effect
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    createSparkle(window.innerWidth/2, window.innerHeight/2);
+                }, i * 100);
+            }
+        }
+
+        function createSparkle(x, y) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.textContent = '✨';
+            sparkle.style.left = x + Math.random() * 100 - 50 + 'px';
+            sparkle.style.top = y + Math.random() * 100 - 50 + 'px';
+            sparkle.style.fontSize = (20 + Math.random() * 20) + 'px';
+            document.body.appendChild(sparkle);
+            setTimeout(() => sparkle.remove(), 1000);
+        }
+
+        // Handle YES Click
+        function handleYes() {
+            // Hide question, show success
+            document.getElementById('questionSection').classList.add('hidden-section');
+            document.getElementById('questionSection').style.display = 'none';
+            
+            const success = document.getElementById('successSection');
+            success.classList.remove('hidden-section');
+            success.style.display = 'block';
+            
+            // Start confetti
+            startConfetti();
+            
+            // Add glitter effects
+            addGlitterEffects();
+            
+            // Send notification email (simulate)
+            sendNotification();
+            
+            // Add jumping animation to GIF container
+            const gifContainer = document.querySelector('.gif-container');
+            gifContainer.addEventListener('mouseenter', () => {
+                gifContainer.style.transform = 'scale(1.05) rotate(2deg)';
+            });
+            gifContainer.addEventListener('mouseleave', () => {
+                gifContainer.style.transform = 'scale(1) rotate(0deg)';
+            });
+        }
+
+        // Glitter Effects
+        function addGlitterEffects() {
+            const container = document.getElementById('glitterContainer');
+            setInterval(() => {
+                const glitter = document.createElement('div');
+                glitter.className = 'glitter';
+                glitter.style.left = Math.random() * 100 + '%';
+                glitter.style.top = Math.random() * 100 + '%';
+                glitter.style.animationDelay = Math.random() + 's';
+                container.appendChild(glitter);
+                setTimeout(() => glitter.remove(), 2000);
+            }, 200);
+        }
+
+        // Simulated Email Notification
+        function sendNotification() {
+            // In a real implementation, this would call your backend API
+            console.log(`📧 Sending notification: ${recipientName} said YES!`);
+            
+            // Visual feedback
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-4 left-4 bg-green-500 text-white px-6 py-3 rounded-full shadow-xl z-50 animate-bounce';
+            notification.innerHTML = '📩 Notification sent to your Valentine!';
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+            
+            // For actual implementation, you would use:
+            /*
+            fetch('https://your-backend.com/api/notify', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    recipient: recipientName,
+                    message: `${recipientName} accepted your Valentine proposal!`,
+                    timestamp: new Date().toISOString()
+                })
+            });
+            */
+        }
+
+        // Confetti Animation
+        function startConfetti() {
+            const canvas = document.getElementById('confettiCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const particles = [];
+            const colors = ['#ff6b9d', '#ff006e', '#ffd700', '#00ced1', '#ff69b4', '#fff'];
+            
+            for (let i = 0; i < 150; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    vx: (Math.random() - 0.5) * 4,
+                    vy: Math.random() * 4 + 2,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    size: Math.random() * 8 + 4,
+                    rotation: Math.random() * 360,
+                    rotationSpeed: (Math.random() - 0.5) * 10
+                });
+            }
+            
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                particles.forEach((p, i) => {
+                    p.y += p.vy;
+                    p.x += p.vx;
+                    p.rotation += p.rotationSpeed;
+                    
+                    if (p.y > canvas.height) {
+                        particles[i].y = -20;
+                        particles[i].x = Math.random() * canvas.width;
+                    }
+                    
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate(p.rotation * Math.PI / 180);
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+                    ctx.restore();
+                });
+                
+                requestAnimationFrame(animate);
+            }
+            animate();
+            
+            // Continue for 5 seconds then slow down
+            setTimeout(() => {
+                particles.forEach(p => p.vy *= 0.5);
+            }, 5000);
+        }
+
+        // Generate PDF Card
+        function generateCard() {
+            // Using browser's print to PDF functionality
+            const element = document.getElementById('pdfTemplate');
+            
+            // Temporarily show
+            element.style.position = 'fixed';
+            element.style.left = '0';
+            element.style.top = '0';
+            element.style.zIndex = '-1';
+            
+            window.print();
+            
+            element.style.left = '-9999px';
+            
+            // Alternative: Use html2pdf.js library for better control
+            // For now, opening a styled print dialog
+        }
+
+        // Reset Demo
+        function resetDemo() {
+            runAttempts = 0;
+            location.reload();
+        }
+
+        // Add keyboard shortcut for Yes (Easter egg)
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'y' && document.getElementById('questionSection').style.display !== 'none') {
+                handleYes();
+            }
+        });
+
+        // Prevent mobile scroll issues
+        document.addEventListener('touchmove', function(e) {
+            if (e.target.closest('#noBtn')) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        function handleYes() {
+        document.getElementById('questionSection').style.display = 'none';
+        document.getElementById('successSection').style.display = 'block';
+
+        const music = document.getElementById('bgMusicc');
+        music.volume = 0.7;
+        music.play().catch(()=>{});
+
+         function turnToYes(btn) {
+        if (runAttempts < 5) return;
+        btn.className = 'yes-btn px-12 py-6 rounded-full text-2xl font-bold text-white';
+        btn.innerHTML = 'YES! 💖';
+        btn.onclick = handleYes;
+    }
+    // ⬇️ Smooth scroll to download section
+    setTimeout(() => {
+        document.getElementById('downloadSection')
+            .scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 2500); // wait for animation to finish
+    }
+
+    </script>
+    <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyA2vOPwhwApNXdjkLk4EstMGlgRQ9hPYn4",
+    authDomain: "romantic-roses-f8332.firebaseapp.com",
+    projectId: "romantic-roses-f8332",
+    storageBucket: "romantic-roses-f8332.firebasestorage.app",
+    messagingSenderId: "675862812075",
+    appId: "1:675862812075:web:09b8c4cff9eda660ec2eee"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+</script>
+</body>
+</html>
